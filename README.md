@@ -107,6 +107,7 @@ git clone https://github.com/gregversteeg/NPEET.git
 cd NPEET
 pip install .
 pip install scikit-learn
+pip install ollama for the Mistral Large Enough model or other ollama models
 
 # Set up 2D Diffusion baseline run
 cd templates/2d_diffusion && python experiment.py --out_dir run_0 && python plot.py

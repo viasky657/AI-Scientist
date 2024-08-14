@@ -486,16 +486,23 @@ if __name__ == "__main__":
     # Create client
     if args.model == "claude-3-5-sonnet-20240620":
         import anthropic
-
         print(f"Using Anthropic API with model {args.model}.")
         client_model = "claude-3-5-sonnet-20240620"
         client = anthropic.Anthropic()
+        
+    elif args.model == "mistral-large-instruct-2407":
+        import ollama
+        print(f"Using Ollama API with model {args.model}.")
+        client_model = "mistral-large-instruct-2407"
+        client = ollama.Client()
+    
     elif args.model == "gpt-4o-2024-05-13" or args.model == "hybrid":
         import openai
 
         print(f"Using OpenAI API with model {args.model}.")
         client_model = "gpt-4o-2024-05-13"
         client = openai.OpenAI()
+        
     elif args.model == "deepseek-coder-v2-0724":
         import openai
 
