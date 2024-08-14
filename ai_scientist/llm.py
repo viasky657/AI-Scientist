@@ -18,33 +18,7 @@ def get_batch_responses_from_llm(
     if msg_history is None:
         msg_history = []
     
-    #Ollama Mistral Large Enough Model    
-    new_msg_history = msg_history + [{"role": "user", "content": msg}]
-        
-        # Prepare the messages for Ollama
-    messages = [{"role": "system", "content": system_message}] + new_msg_history
     
-    # Call Ollama
-    response = client.chat(
-        model="mistral-large-instruct-2407",
-        messages=messages,
-        temperature=temperature,
-    )
-    
-    content = response['message']['content']
-    new_msg_history = new_msg_history + [{"role": "assistant", "content": content}]
-
-    if print_debug:
-        print()
-        print("*" * 20 + " LLM START " + "*" * 20)
-        for j, msg in enumerate(new_msg_history):
-            print(f'{j}, {msg["role"]}: {msg["content"]}')
-        print(content)
-        print("*" * 21 + " LLM END " + "*" * 21)
-        print()
-
-    return content, new_msg_history
-
     if model in [
         "gpt-4o-2024-05-13",
         "gpt-4o-mini-2024-07-18",
@@ -113,6 +87,21 @@ def get_batch_responses_from_llm(
                 msg_history=None,
                 temperature=temperature,
             )
+            content.append(c)
+            new_msg_history.append(hist)
+            
+    elif model == "mistral-large-instruct-2407":
+        content, new_msg_history = [], []
+        for _ in range(n_responses):
+            new_msg_history = msg_history + [{"role": "user", "content": msg}]
+            messages = [{"role": "system", "content": system_message}] + new_msg_history
+            response = client.chat(
+                model="mistral-large-instruct-2407",
+                messages=messages,
+                temperature=temperature,
+            )
+            c = response['message']['content']
+            hist = new_msg_history + [{"role": "assistant", "content": c}]
             content.append(c)
             new_msg_history.append(hist)
     else:

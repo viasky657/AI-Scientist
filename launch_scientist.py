@@ -46,8 +46,8 @@ def parse_arguments():
     parser.add_argument(
         "--model",
         type=str,
-        default="claude-3-5-sonnet-20240620",
-        choices=["claude-3-5-sonnet-20240620", "gpt-4o-2024-05-13", "deepseek-coder-v2-0724", "llama3.1-405b"],
+        default="mistral-large-instruct-2407",
+        choices=["claude-3-5-sonnet-20240620", "gpt-4o-2024-05-13", "deepseek-coder-v2-0724", "llama3.1-405b", "mistral-large-instruct-2407"],
         help="Model to use for AI Scientist.",
     )
     parser.add_argument(
@@ -144,6 +144,8 @@ def do_idea(
             main_model = Model("deepseek/deepseek-coder")
         elif model == "llama3.1-405b":
             main_model = Model("openrouter/meta-llama/llama-3.1-405b-instruct")
+        elif model == "mistral-large-instruct-2407":
+              main_model = Model("ollama/mistral-large-instruct-2407")
         else:
             main_model = Model(model)
         coder = Coder.create(
@@ -175,6 +177,8 @@ def do_idea(
                 main_model = Model("deepseek/deepseek-coder")
             elif model == "llama3.1-405b":
                 main_model = Model("openrouter/meta-llama/llama-3.1-405b-instruct")
+            elif model == "mistral-large-instruct-2407":
+                 main_model = Model("ollama/mistral-large-instruct-2407")
             else:
                 main_model = Model(model)
             coder = Coder.create(
@@ -290,6 +294,11 @@ if __name__ == "__main__":
             api_key=os.environ["OPENROUTER_API_KEY"],
             base_url="https://openrouter.ai/api/v1"
         )
+    elif args.model == "mistral-large-instruct-2407":
+        import ollama
+        print(f"Using Ollama with {args.model}.")
+        client_model = "mistral-large-instruct-2407"
+        client = ollama.Client()
     else:
         raise ValueError(f"Model {args.model} not supported.")
 

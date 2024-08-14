@@ -310,7 +310,7 @@ def search_for_papers(query, result_limit=10) -> Union[None, List[Dict]]:
 
 novelty_system_msg = """You are an ambitious AI PhD student who is looking to publish a paper that will contribute significantly to the field.
 You have an idea and you want to check if it is novel or not. I.e., not overlapping significantly with existing literature or already well explored.
-Be a harsh critic for novelty, ensure there is a sufficient contribution in the idea for a new conference or workshop paper.
+Be a harsh critic for novelty, ensure there is a sufficient contribution in the idea for a new conference or workshop paper. Be sure that your idea is related to Mamba improvements such as Mamba Sparse attention or Mamba Grokking.
 You will be given access to the Semantic Scholar API, which you may use to survey the literature and find relevant papers to help you make your decision.
 The top 10 results for any search query will be presented to you with the abstracts.
 
@@ -468,6 +468,7 @@ if __name__ == "__main__":
             "gpt-4o-2024-05-13",
             "deepseek-coder-v2-0724",
             "llama3.1-405b",
+            "mistral-large-instruct-2407",
         ],
         help="Model to use for AI Scientist.",
     )
@@ -520,6 +521,11 @@ if __name__ == "__main__":
             api_key=os.environ["OPENROUTER_API_KEY"],
             base_url="https://openrouter.ai/api/v1",
         )
+    elif args.model == "mistral-large-instruct-2407":
+        import ollama
+        print(f"Using Ollama with {args.model}.")
+        client_model = "mistral-large-instruct-2407"
+        client = ollama.Client()
     else:
         raise ValueError(f"Model {args.model} not supported.")
 
